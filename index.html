@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Veridia State Gazette</title>
+  <style>
+    body {
+      font-family: 'Georgia', serif;
+      background-color: #fbf8f3;
+      color: #2b2b2b;
+      margin: 0;
+      padding: 20px;
+    }
+    .container {
+      max-width: 900px;
+      margin: 0 auto;
+      border: 2px solid #333;
+      padding: 25px;
+      background: #fff;
+      box-shadow: 5px 5px 15px rgba(0,0,0,0.1);
+    }
+    h1 {
+      text-align: center;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      border-bottom: 2px solid #333;
+      padding-bottom: 10px;
+      margin-top: 0;
+    }
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 15px;
+      margin-top: 20px;
+    }
+    .card {
+      border: 1px solid #ccc;
+      padding: 15px;
+      background-color: #fafafa;
+    }
+    .card h3 {
+      margin-top: 0;
+      border-bottom: 1px solid #ddd;
+      padding-bottom: 5px;
+    }
+    .crisis-box {
+      background-color: #fff3f3;
+      border: 1px solid #d9534f;
+      padding: 15px;
+      margin-bottom: 20px;
+    }
+    .crisis-box h2 {
+      color: #d9534f;
+      margin-top: 0;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 10px;
+    }
+    th, td {
+      border: 1px solid #ddd;
+      padding: 8px;
+      text-align: left;
+    }
+    th {
+      background-color: #f2f2f2;
+    }
+  </style>
+</head>
+<body>
+
+<div class="container">
+  <h1>📜 The Gazette of Veridia</h1>
+  <p style="text-align: center; font-style: italic;">Official Commonwealth Dispatch & Economic Record</p>
+
+  <div id="crisis-section" class="crisis-box" style="display: none;">
+    <h2>🚨 Active National Crises</h2>
+    <ul id="crisis-list"></ul>
+  </div>
+
+  <h2>💰 National Treasury & Indicators</h2>
+  <div class="grid" id="national-cards">
+    <div class="card">Loading updates from the Ministry of Finance...</div>
+  </div>
+
+  <h2>🏛️ Provincial Status</h2>
+  <table id="province-table">
+    <thead>
+      <tr>
+        <th>Province</th>
+        <th>Infra Tier</th>
+        <th>Prosperity</th>
+        <th>Unrest</th>
+        <th>Tax Yield</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr><td colspan="5">Fetching provincial reports...</td></tr>
+    </tbody>
+  </table>
+</div>
+
+<script>
+  // REPLACE THIS WITH YOUR DEPLOYED APPS SCRIPT URL!
+  const API_URL = "https://script.google.com/macros/s/AKfycbyYqveTzbfirs5pnyw3qe4OR_Uo0BCchlSNcSv9LnmP4dWZ-ut6cP65L414JTRfxPg/exec";
+
+  async function fetchEngineData() {
+    try {
+      const res = await fetch(API_URL);
+      const data = await res.json();
+
+      // Render Crises
+      const crisisList = document.getElementById("crisis-list");
+      const crisisSection = document.getElementById("crisis-section");
+      crisisList.innerHTML = "";
+      
+      if (data.events && data.events.length > 0) {
+        crisisSection.style.display = "block";
+        data.events.forEach(e => {
+          const li = document.createElement("li");
+          li.innerHTML = `<strong>⚠️ ${e}</strong>`;
+          crisisList.appendChild(li);
+        });
+      } else {
+        crisisSection.style.display = "none";
+      }
+
+      // Render National Finances
+      const n = data.national;
+      document.getElementById("national-cards").innerHTML = `
+        <div class="card">
+          <h3>Treasury</h3>
+          <p><strong>₳ ${Math.round(n.treasury).toLocaleString()}</strong></p>
+        </div>
+        <div class="card">
+          <h3>National Debt</h3>
+          <p><strong>₳ ${Math.round(n.debt).toLocaleString()}</strong></p>
+        </div>
+        <div class="card">
+          <h3>Stability Index</h3>
+          <p><strong>${Math.round(n.stability)} / 100</strong></p>
+        </div>
+        <div class="card">
+          <h3>Inflation</h3>
+          <p><strong>${n.inflation.toFixed(1)}%</strong></p>
+        </div>
+      `;
+
+      // Render Province Table
+      const tbody = document.querySelector("#province-table tbody");
+      tbody.innerHTML = "";
+      data.provinces.forEach(p => {
+        const tr = document.createElement("tr");
+        tr.innerHTML = `
+          <td><strong>${p.name}</strong></td>
+          <td>Tier ${p.infraTier}</td>
+          <td>${p.prosperity}</td>
+          <td>${p.unrest}</td>
+          <td>₳ ${Math.round(p.taxYield).toLocaleString()}</td>
+        `;
+        tbody.appendChild(tr);
+      });
+
+    } catch (err) {
+      console.error("Failed to load engine data:", err);
+    }
+  }
+
+  fetchEngineData();
+</script>
+
+</body>
+</html>
