@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Commonwealth of Veridia — State Gazette</title>
+  <title>Commonwealth of Veridia — State Gazette & Cabinet</title>
   
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
@@ -16,21 +16,16 @@
       --accent-red: #a93226;
       --border-gold: #8c6d31;
       --text-light: #f5e6d3;
-      --province-hover: #f5e6d3;
       --province-selected: #d4af37;
     }
 
-    * {
-      box-sizing: border-box;
-    }
+    * { box-sizing: border-box; }
 
     body {
       font-family: 'Georgia', 'Times New Roman', serif;
       margin: 0;
       padding: 0;
       color: var(--text-light);
-
-      /* Victorian Red Tint Overlay with standard webp map file */
       background: 
         linear-gradient(rgba(70, 15, 20, 0.35), rgba(25, 8, 10, 0.65)),
         url('background.jpg');
@@ -45,7 +40,6 @@
       min-height: 100vh;
     }
 
-    /* Victorian Style Sidebar */
     sidebar {
       width: 280px;
       background-color: var(--sidebar-bg);
@@ -97,7 +91,6 @@
       gap: 10px;
     }
 
-    /* Victoria 3 Style Ornate Buttons */
     .nav-btn {
       background: linear-gradient(180deg, #3a171a 0%, #200b0d 100%);
       border: 1px solid var(--border-gold);
@@ -132,7 +125,6 @@
       border-radius: 3px;
     }
 
-    /* Main Area */
     main {
       margin-left: 280px;
       flex: 1;
@@ -146,16 +138,13 @@
       animation: fadeIn 0.3s ease-out forwards;
     }
 
-    .page-section.active {
-      display: block;
-    }
+    .page-section.active { display: block; }
 
     @keyframes fadeIn {
       from { opacity: 0; transform: translateY(5px); }
       to { opacity: 1; transform: translateY(0); }
     }
 
-    /* Custom Ornate Cards */
     .grid {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
@@ -170,11 +159,6 @@
       padding: 20px;
       box-shadow: 0 4px 12px rgba(0,0,0,0.6);
       transition: transform 0.2s ease, border-color 0.2s ease;
-    }
-
-    .card:hover {
-      transform: translateY(-3px);
-      border-color: var(--accent-gold);
     }
 
     .card h3 {
@@ -199,18 +183,8 @@
       border-radius: 4px;
       padding: 20px;
       margin-bottom: 25px;
-      box-shadow: 0 0 10px rgba(169, 50, 38, 0.3);
     }
 
-    .crisis-box h2 {
-      color: #f87171;
-      margin-top: 0;
-      font-size: 1.1rem;
-      border-bottom: 1px solid #f87171;
-      padding-bottom: 5px;
-    }
-
-    /* Tables */
     table {
       width: 100%;
       border-collapse: collapse;
@@ -219,7 +193,6 @@
       border-radius: 4px;
       overflow: hidden;
       border: 1px solid var(--border-gold);
-      box-shadow: 0 4px 12px rgba(0,0,0,0.5);
     }
 
     th, td {
@@ -233,15 +206,8 @@
       color: var(--accent-gold);
       text-transform: uppercase;
       font-size: 0.85rem;
-      letter-spacing: 1px;
-      border-bottom: 2px solid var(--border-gold);
     }
 
-    tr:hover {
-      background-color: rgba(92, 29, 24, 0.4);
-    }
-
-    /* Map Layout */
     #map-wrapper {
       display: grid;
       grid-template-columns: 2fr 1fr;
@@ -254,56 +220,46 @@
       width: 100%;
       border: 2px solid var(--border-gold);
       background-color: rgba(10, 5, 7, 0.85);
-      box-shadow: inset 0 0 20px rgba(0,0,0,0.8);
-      overflow: hidden;
       border-radius: 4px;
       padding: 10px;
       text-align: center;
     }
 
-    .map-container svg {
+    .map-container svg { width: 100%; height: auto; max-height: 550px; }
+
+    .province-path { cursor: pointer; stroke-width: 2; transition: all 0.25s ease; }
+    .province-path:hover { fill-opacity: 0.85 !important; stroke: var(--accent-gold) !important; stroke-width: 3px !important; }
+    .province-path.selected { fill: var(--province-selected) !important; stroke: #ffffff !important; stroke-width: 3px !important; }
+
+    #province-details-panel, .chart-box, .form-box {
+      background: var(--card-bg);
+      border: 1px solid var(--border-gold);
+      border-radius: 4px;
+      padding: 20px;
+      margin-top: 20px;
+    }
+
+    /* Input & Form Styling */
+    input, select, button.action-btn {
       width: 100%;
-      height: auto;
-      max-height: 550px;
-      display: block;
+      padding: 12px;
+      margin-top: 8px;
+      margin-bottom: 16px;
+      background: #140c0e;
+      border: 1px solid var(--border-gold);
+      color: var(--text-light);
+      font-family: 'Georgia', serif;
+      border-radius: 3px;
     }
 
-    /* Interactive SVG Province Styles */
-    .province-path {
+    button.action-btn {
+      background: linear-gradient(180deg, var(--accent-red) 0%, #5c1d18 100%);
+      color: #fff;
+      font-weight: bold;
       cursor: pointer;
-      stroke-width: 2;
-      transition: all 0.25s ease;
     }
 
-    .province-path:hover {
-      fill-opacity: 0.85 !important;
-      stroke: var(--accent-gold) !important;
-      stroke-width: 3px !important;
-      filter: drop-shadow(0 0 6px var(--accent-gold));
-    }
-
-    .province-path.selected {
-      fill: var(--province-selected) !important;
-      fill-opacity: 0.85 !important;
-      stroke: #ffffff !important;
-      stroke-width: 3px !important;
-    }
-
-    #province-details-panel {
-      background: var(--card-bg);
-      border: 1px solid var(--border-gold);
-      border-radius: 4px;
-      padding: 20px;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.6);
-    }
-
-    .chart-box {
-      background: var(--card-bg);
-      border: 1px solid var(--border-gold);
-      border-radius: 4px;
-      padding: 20px;
-      margin-top: 25px;
-    }
+    button.action-btn:hover { background: var(--accent-gold); color: #000; }
   </style>
 </head>
 <body>
@@ -314,18 +270,19 @@
      <img src="rov2.png" alt="National Emblem" style="max-width: 120%; height: auto;" />
    </div>
     <h1>Commonwealth of Veridia</h1>
-    <div class="subtitle">State Gazette</div>
+    <div class="subtitle">State Gazette & Cabinet</div>
 
     <div class="nav-list">
       <button class="nav-btn active" onclick="switchTab('national')"><span>🏛️</span> State Treasury</button>
       <button class="nav-btn" onclick="switchTab('provinces')"><span>🗺️</span> Territorial Map</button>
       <button class="nav-btn" onclick="switchTab('sectors')"><span>🏭</span> Strategic Industries</button>
       <button class="nav-btn" onclick="switchTab('currency')"><span>🪙</span> Mint & Markets</button>
+      <button class="nav-btn" onclick="switchTab('player')"><span>👤</span> Player Cabinet</button>
     </div>
 
     <div class="system-status">
       <small style="color: var(--accent-gold); display: block; margin-bottom: 4px;">SYSTEM STATUS</small>
-      <small style="color: #65CD74;">Engine Active</small>
+      <small id="user-status-text" style="color: #65CD74;">Public Visitor Mode</small>
     </div>
   </sidebar>
 
@@ -344,12 +301,9 @@
 
     <div id="page-provinces" class="page-section">
       <h2>Interactive Provincial Territory Map</h2>
-
       <div id="map-wrapper">
         <div class="map-container">
-          <svg width="1234" height="823" viewBox="0 0 1234 823" fill="none" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-            <rect width="1234" height="823" fill="url(#pattern0_2_2)"/>
-            
+          <svg width="1234" height="823" viewBox="0 0 1234 823" fill="none" xmlns="http://www.w3.org/2000/svg">
             <g id="provinces-group">
               <path id="New Brunswick" class="province-path" d="M330.5 424L308.5 365.5L335 350L468 346L486.5 384L526.5 350L547 313.5L641 319.5L661 360.5L657 424L627.5 478L581.5 524L616.5 559.5V567L621.5 588.5L610.5 614.5L621.5 652.5L581.5 666.5L547 652.5L505.5 666.5L465.5 696L472.5 652.5L435 636.5L414 614.5L402 593.5L414 576.5L402 532.5L397 498.5L377.5 461L353.5 441L330.5 424Z" fill="#FF0000" fill-opacity="0.55" stroke="#1A1A1A"/>
               <path id="Lowenwood" class="province-path" d="M621 563L583.5 519.5H597L615 489.5L629.5 473.5L658.5 428.5H683L720.5 459.5H779L868.5 441.5L855.5 480L868.5 497.5L855.5 536L827.5 563L837.5 612.5L847 655V703L821.5 721V709L800.5 714L787 745L739.5 738.5L720.5 703H666.5L597 682.5V662.5L621 655L610.5 612.5L621 563Z" fill="#65CD74" fill-opacity="0.6" stroke="#1A1A1A"/>
@@ -357,47 +311,20 @@
               <path id="Hartland" class="province-path" d="M692.5 215L658 189.5L642 195L630.5 207.5L613.5 218.5L599.5 238.5L611 264.5L630.5 288V319H642L655 340L662.5 364.5L658 377V397.5L662.5 409L658 425.5L702.5 439.5L721 456.5H764.5H832L854.5 453L886.5 444.5L895 439.5L891 418.5H900L908.5 405V390L923.5 381.5L938 360L933.5 351L928.5 338L959 331V319L952 296H959L972 284H992V271L985.5 264.5L1012.5 251L1025 238.5L1003 203H985.5L959 189.5L933.5 169L908.5 189.5L886.5 184.5L872.5 189.5L851 184.5L822 195L813.5 189.5L796 195L764.5 203L715.5 207.5L692.5 215Z" fill="#0800FF" fill-opacity="0.27" stroke="#1A1A1A"/>
               <path id="Phillippia" class="province-path" d="M254.5 247.5L224 207L233.5 198.5C235.605 208.333 241.752 227.9 249.5 227.5C259.185 227 254.5 219.5 271.5 207C288.5 194.5 291.5 194 295 194C298.5 194 308 171.5 308 161C308 150.5 319 152 328 150C337 148 335 130 331.5 130C328 130 347 112 352 112C356 112 378.333 94 389 85L414.5 69L435 80L464 102L501 112L517 140L545 130L576.5 146L641 171.5L647 194L597 232.5L630 315.5H536L489 377.5L458.5 342.5L319 357L308 330.5L286 304.5L308 296L254.5 247.5Z" fill="#FAD02A" fill-opacity="0.47" stroke="#1A1A1A"/>
             </g>
-            
-            <defs>
-              <pattern id="pattern0_2_2" patternContentUnits="objectBoundingBox" width="1" height="1">
-                <use xlink:href="#image0_2_2" transform="scale(0.000810373 0.00121507)"/>
-              </pattern>
-              <image id="image0_2_2" width="1234" height="823" preserveAspectRatio="none" xlink:href="40582.webp"/>
-            </defs>
           </svg>
         </div>
 
         <div id="province-details-panel">
           <h3 id="panel-title" style="color: var(--accent-gold); margin-top: 0;">Click a Province</h3>
-          <p id="panel-body">Select any territory on the map to inspect provincial statistics, unrest levels, and tax revenue yields.</p>
+          <p id="panel-body">Select any territory on the map to inspect provincial statistics.</p>
         </div>
       </div>
-
-      <h3 style="margin-top: 30px; color: var(--accent-gold);">Provincial Registry Data</h3>
-      <table id="province-table">
-        <thead>
-          <tr>
-            <th>Province</th>
-            <th>Infra Tier</th>
-            <th>Prosperity Index</th>
-            <th>Unrest Level</th>
-            <th>Tax Yield</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr><td colspan="5">Fetching provincial reports...</td></tr>
-        </tbody>
-      </table>
     </div>
 
     <div id="page-sectors" class="page-section">
       <h2>Economic Sector Output</h2>
-      <div class="grid" id="sector-cards">
-        <div class="card">Loading sector data...</div>
-      </div>
-      <div class="chart-box">
-        <canvas id="sectorChart" height="100"></canvas>
-      </div>
+      <div class="grid" id="sector-cards"><div class="card">Loading sector data...</div></div>
+      <div class="chart-box"><canvas id="sectorChart" height="100"></canvas></div>
     </div>
 
     <div id="page-currency" class="page-section">
@@ -406,31 +333,75 @@
         <h3>Legal Tender Specification</h3>
         <p>Standard Currency: <strong>Veridian Crown (₳)</strong></p>
         <p>Monetary Backing: <strong>0.75 oz Fine Silver per Austral</strong></p>
-        <p>State Reserve Vaults: <strong id="reserve-val">₳ 45,000</strong></p>
       </div>
 
       <h3 style="color: var(--accent-gold);">Market Commodity Prices</h3>
       <table id="market-table">
-        <thead>
-          <tr>
-            <th>Commodity</th>
-            <th>Current Price per Unit</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr><td colspan="2">Fetching commodity index...</td></tr>
-        </tbody>
+        <thead><tr><th>Commodity</th><th>Current Price per Unit</th></tr></thead>
+        <tbody><tr><td colspan="2">Fetching commodity index...</td></tr></tbody>
       </table>
     </div>
+
+    <div id="page-player" class="page-section">
+      <h2>Player Private Portfolio & Orders</h2>
+
+      <div id="player-login-box" class="form-box">
+        <h3 style="color: var(--accent-gold); margin-top: 0;">Cabinet Member Login</h3>
+        <p>Enter your registered Player Name and Passcode / PIN to access financial management and execute turn actions.</p>
+        
+        <label>Player Name:</label>
+        <input type="text" id="login-name" placeholder="e.g. Lord Harrington" />
+
+        <label>Passcode / PIN:</label>
+        <input type="password" id="login-passcode" placeholder="****" />
+
+        <button class="action-btn" onclick="authenticatePlayer()">Login to Portfolio</button>
+        <div id="login-error" style="color: #f87171; display: none; margin-top: 10px;"></div>
+      </div>
+
+      <div id="player-dashboard-content" style="display: none;">
+        <div class="grid" id="player-stats-cards"></div>
+
+        <div class="form-box">
+          <h3 style="color: var(--accent-gold); margin-top: 0;">Submit Executive Action</h3>
+          <p>Orders submitted here will be processed during the next turn publication.</p>
+
+          <label>Action Type:</label>
+          <select id="action-type">
+            <option value="Buy government bonds">Buy Government Bonds</option>
+            <option value="Donate to party">Donate to Political Party</option>
+            <option value="Fund newspaper">Fund Newspaper Campaign</option>
+            <option value="Hire laborers">Hire Laborers</option>
+          </select>
+
+          <label>Target Province / Region (Optional):</label>
+          <select id="action-province">
+            <option value="Hartland">Hartland</option>
+            <option value="Phillippia">Phillippia</option>
+            <option value="New Brunswick">New Brunswick</option>
+            <option value="Lowenwood">Lowenwood</option>
+            <option value="Maris">Maris</option>
+          </select>
+
+          <label>Capital Allocation Amount (₳):</label>
+          <input type="number" id="action-amount" placeholder="e.g. 1000" />
+
+          <button class="action-btn" onclick="submitPlayerAction()">Dispatch Order</button>
+          <div id="action-status" style="margin-top: 10px;"></div>
+        </div>
+      </div>
+    </div>
+
   </main>
 </div>
 
 <script>
-  // 🔗 PASTE YOUR DEPLOYED GOOGLE APPS SCRIPT WEB APP URL HERE:
+  // Deployed Google Apps Script Web App URL
   const API_URL = "https://script.google.com/macros/s/AKfycbx43_e5dzt76wsmMa_cG2XLChe8xSRqOnPqrvEq0W4bT5svXkGmx2wxxT_X6DiquBYx/exec";
 
   let loadedProvincesData = [];
   let sectorChartInstance = null;
+  let activeSession = { playerName: "", passcode: "" };
 
   function switchTab(tabId) {
     document.querySelectorAll('.page-section').forEach(p => p.classList.remove('active'));
@@ -440,6 +411,7 @@
     event.currentTarget.classList.add('active');
   }
 
+  // 1. FETCH PUBLIC GAZETTE DATA
   async function fetchEngineData() {
     try {
       const res = await fetch(API_URL, { redirect: "follow" });
@@ -447,7 +419,7 @@
 
       if (data.error) throw new Error(data.error);
 
-      // 1. Active Emergencies
+      // Emergencies
       const crisisList = document.getElementById("crisis-list");
       const crisisSection = document.getElementById("crisis-section");
       crisisList.innerHTML = "";
@@ -460,7 +432,7 @@
         });
       }
 
-      // 2. National Treasury
+      // National Treasury Cards
       const n = data.national;
       document.getElementById("national-cards").innerHTML = `
         <div class="card"><h3>Treasury Balance</h3><div class="value">₳ ${Math.round(n.treasury).toLocaleString()}</div></div>
@@ -469,7 +441,7 @@
         <div class="card"><h3>Inflation Rate</h3><div class="value">${n.inflation.toFixed(1)}%</div></div>
       `;
 
-      // 3. Sectors & Chart
+      // Sector Yield Cards
       const s = data.sectors;
       document.getElementById("sector-cards").innerHTML = `
         <div class="card"><h3>🌾 Agriculture</h3><div class="value">₳ ${s.agriculture.toLocaleString()}</div></div>
@@ -479,7 +451,7 @@
       `;
       renderChart(s);
 
-      // 4. Commodity Prices
+      // Commodity Prices
       const marketTbody = document.querySelector("#market-table tbody");
       if (data.market && data.market.length > 0) {
         marketTbody.innerHTML = "";
@@ -488,41 +460,103 @@
         });
       }
 
-      // 5. Provinces Table & Map Integration
       loadedProvincesData = data.provinces || [];
-      const provTbody = document.querySelector("#province-table tbody");
-      if (loadedProvincesData.length > 0) {
-        provTbody.innerHTML = "";
-        loadedProvincesData.forEach(p => {
-          provTbody.innerHTML += `
-            <tr>
-              <td><strong>${p.name}</strong></td>
-              <td>Tier ${p.infraTier}</td>
-              <td>${p.prosperity}</td>
-              <td>${p.unrest}</td>
-              <td>₳ ${Math.round(p.taxYield).toLocaleString()}</td>
-            </tr>`;
-        });
-      }
-
       bindSVGMapEvents();
 
     } catch (err) {
       console.error("Failed to load engine data:", err);
-      document.getElementById("national-cards").innerHTML = `
-        <div class="card" style="border-color: var(--accent-red); color: #f87171; grid-column: 1/-1;">
-          <h3>⚠️ Data Connection Required</h3>
-          <p>Please insert your deployed Apps Script URL into line 319 of <code>index.html</code>.</p>
-        </div>`;
-      
-      bindSVGMapEvents();
     }
   }
 
-  // 🗺️ SVG MAP INTERACTIVE CLICK BINDINGS
+  // 2. AUTHENTICATE PLAYER & RENDER PERSONAL DASHBOARD
+  async function authenticatePlayer() {
+    const name = document.getElementById("login-name").value.trim();
+    const pass = document.getElementById("login-passcode").value.trim();
+    const errorDiv = document.getElementById("login-error");
+
+    errorDiv.style.display = "none";
+
+    if (!name || !pass) {
+      errorDiv.innerText = "Please enter both Player Name and PIN.";
+      errorDiv.style.display = "block";
+      return;
+    }
+
+    try {
+      const url = `${API_URL}?action=authPlayer&playerName=${encodeURIComponent(name)}&passcode=${encodeURIComponent(pass)}`;
+      const res = await fetch(url, { redirect: "follow" });
+      const result = await res.json();
+
+      if (!result.success) {
+        errorDiv.innerText = result.error || "Authentication failed.";
+        errorDiv.style.display = "block";
+        return;
+      }
+
+      activeSession = { playerName: name, passcode: pass };
+      document.getElementById("user-status-text").innerText = `Active: ${name}`;
+
+      // Render Player Cards
+      const p = result.player;
+      document.getElementById("player-stats-cards").innerHTML = `
+        <div class="card"><h3>Liquid Cash</h3><div class="value">₳ ${Math.round(p.cash).toLocaleString()}</div></div>
+        <div class="card"><h3>Total Net Worth</h3><div class="value">₳ ${Math.round(p.netWorth).toLocaleString()}</div></div>
+        <div class="card"><h3>Monthly Income</h3><div class="value">₳ ${Math.round(p.monthlyIncome).toLocaleString()}</div></div>
+        <div class="card"><h3>Political Influence</h3><div class="value">${p.politicalInfluence} pts</div></div>
+        <div class="card"><h3>Bond Holdings</h3><div class="value">₳ ${Math.round(p.bondHoldings).toLocaleString()}</div></div>
+      `;
+
+      document.getElementById("player-login-box").style.display = "none";
+      document.getElementById("player-dashboard-content").style.display = "block";
+
+    } catch (err) {
+      errorDiv.innerText = "Error connecting to server.";
+      errorDiv.style.display = "block";
+    }
+  }
+
+  // 3. SUBMIT PLAYER ACTION (POST)
+  async function submitPlayerAction() {
+    const actionType = document.getElementById("action-type").value;
+    const province = document.getElementById("action-province").value;
+    const amount = Number(document.getElementById("action-amount").value);
+    const statusDiv = document.getElementById("action-status");
+
+    if (!amount || amount <= 0) {
+      statusDiv.innerHTML = "<span style='color:#f87171;'>Please enter a valid amount.</span>";
+      return;
+    }
+
+    statusDiv.innerHTML = "Submitting action...";
+
+    try {
+      const payload = {
+        playerName: activeSession.playerName,
+        passcode: activeSession.passcode,
+        actionType: actionType,
+        province: province,
+        amount: amount
+      };
+
+      const res = await fetch(API_URL, {
+        method: "POST",
+        body: JSON.stringify(payload)
+      });
+      const data = await res.json();
+
+      if (data.success) {
+        statusDiv.innerHTML = `<span style='color:#65CD74;'>✔️ ${data.message}</span>`;
+        document.getElementById("action-amount").value = "";
+      } else {
+        statusDiv.innerHTML = `<span style='color:#f87171;'>❌ ${data.error}</span>`;
+      }
+    } catch (err) {
+      statusDiv.innerHTML = "<span style='color:#f87171;'>❌ Failed to reach Apps Script endpoint.</span>";
+    }
+  }
+
   function bindSVGMapEvents() {
     const paths = document.querySelectorAll('#provinces-group path');
-
     paths.forEach(path => {
       path.addEventListener('click', function() {
         paths.forEach(p => p.classList.remove('selected'));
@@ -542,15 +576,11 @@
             <p><strong>Unrest Level:</strong> ${match.unrest}</p>
             <p><strong>Tax Output:</strong> ₳ ${Math.round(match.taxYield).toLocaleString()}</p>
           `;
-        } else {
-          panelTitle.innerText = `🏛️ ${provinceName}`;
-          panelBody.innerHTML = `<p><em>Selected Territory: <strong>${provinceName}</strong></em></p><p>Connect your deployed Apps Script URL to populate live metrics.</p>`;
         }
       });
     });
   }
 
-  // Render Sectors Graph using Chart.js
   function renderChart(sectors) {
     const ctx = document.getElementById('sectorChart').getContext('2d');
     if (sectorChartInstance) sectorChartInstance.destroy();
@@ -567,10 +597,7 @@
       },
       options: {
         responsive: true,
-        plugins: {
-          legend: { display: false },
-          title: { display: true, text: 'Sector Yields', color: '#f5e6d3' }
-        },
+        plugins: { legend: { display: false } },
         scales: {
           x: { ticks: { color: '#b39b82' }, grid: { color: 'rgba(140, 109, 49, 0.3)' } },
           y: { ticks: { color: '#b39b82' }, grid: { color: 'rgba(140, 109, 49, 0.3)' } }
