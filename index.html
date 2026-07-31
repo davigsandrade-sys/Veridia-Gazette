@@ -8,7 +8,7 @@
     :root {
       --bg-color: #fbf8f3;
       --card-bg: #fff;
-      --border-color: #2b3a4a; /* Commonwealth Navy */
+      --border-color: #2b3a4a;
       --text-color: #2b2b2b;
       --accent-red: #8b0000;
       --silver-accent: #708090;
@@ -220,9 +220,9 @@
     <h2>Commonwealth Mint & Monetary Reserve</h2>
     <div class="card" style="margin-bottom: 20px;">
       <h3>Official Legal Tender</h3>
-      <p>Standard Currency: <strong id="currency-name">Veridian Crown (👑)</strong></p>
-      <p>Monetary Standard: <strong id="gold-rate">0.75 oz Fine Silver per Crown</strong></p>
-      <p>Foreign Reserve Vaults: <strong id="reserve-val">👑 0</strong></p>
+      <p>Standard Currency: <strong id="currency-name">Veridian Austral (₳)</strong></p>
+      <p>Monetary Standard: <strong id="gold-rate">0.75 oz Fine Silver per Austral</strong></p>
+      <p>Foreign Reserve Vaults: <strong id="reserve-val">₳ 0</strong></p>
     </div>
     <h3>Market Commodity Price Registry</h3>
     <table id="market-table">
@@ -241,7 +241,7 @@
 
 <script>
   // 🔗 REPLACE WITH YOUR DEPLOYED APPS SCRIPT URL!
-  const API_URL = "YOUR_APPS_SCRIPT_WEB_APP_URL_HERE";
+  const API_URL = "https://script.google.com/macros/s/AKfycbx43_e5dzt76wsmMa_cG2XLChe8xSRqOnPqrvEq0W4bT5svXkGmx2wxxT_X6DiquBYx/exec";
 
   function switchTab(tabId) {
     document.querySelectorAll('.page-section').forEach(p => p.classList.remove('active'));
@@ -253,11 +253,10 @@
 
   async function fetchEngineData() {
     try {
-      // Added redirect handling to prevent Google Apps Script fetch blocks
       const res = await fetch(API_URL, { redirect: "follow" });
       const data = await res.json();
 
-      // Render Crises
+      // 1. Render Crises
       const crisisList = document.getElementById("crisis-list");
       const crisisSection = document.getElementById("crisis-section");
       crisisList.innerHTML = "";
@@ -270,53 +269,61 @@
         });
       }
 
-      // Render National Cards
+      // 2. Render National Indicators
       const n = data.national;
       document.getElementById("national-cards").innerHTML = `
-        <div class="card"><h3>National Treasury</h3><div class="value">👑 ${Math.round(n.treasury).toLocaleString()}</div></div>
-        <div class="card"><h3>Commonwealth Debt</h3><div class="value">👑 ${Math.round(n.debt).toLocaleString()}</div></div>
+        <div class="card"><h3>National Treasury</h3><div class="value">₳ ${Math.round(n.treasury).toLocaleString()}</div></div>
+        <div class="card"><h3>Commonwealth Debt</h3><div class="value">₳ ${Math.round(n.debt).toLocaleString()}</div></div>
         <div class="card"><h3>Stability Index</h3><div class="value">${Math.round(n.stability)} / 100</div></div>
         <div class="card"><h3>Inflation Rate</h3><div class="value">${n.inflation.toFixed(1)}%</div></div>
       `;
 
-      // Render Currency Details
+      // 3. Render Currency & Mint
       document.getElementById("currency-name").innerText = n.currencyName;
       document.getElementById("gold-rate").innerText = n.standardRate;
-      document.getElementById("reserve-val").innerText = `👑 ${n.foreignReserve.toLocaleString()}`;
+      document.getElementById("reserve-val").innerText = `₳ ${n.foreignReserve.toLocaleString()}`;
 
-      // Render Market Prices
+      // 4. Render Market Table
       const marketTbody = document.querySelector("#market-table tbody");
-      marketTbody.innerHTML = "";
-      data.market.forEach(m => {
-        marketTbody.innerHTML += `<tr><td><strong>${m.commodity}</strong></td><td>👑 ${m.price.toFixed(2)}</td></tr>`;
-      });
+      if (data.market && data.market.length > 0) {
+        marketTbody.innerHTML = "";
+        data.market.forEach(m => {
+          marketTbody.innerHTML += `<tr><td><strong>${m.commodity}</strong></td><td>₳ ${m.price.toFixed(2)}</td></tr>`;
+        });
+      } else {
+        marketTbody.innerHTML = `<tr><td colspan="2">No commodity data found in Market sheet.</td></tr>`;
+      }
 
-      // Render Sector Cards
+      // 5. Render Sector Breakdown
       const s = data.sectors;
       document.getElementById("sector-cards").innerHTML = `
-        <div class="card"><h3>🌾 Agricultural Sector</h3><div class="value">👑 ${s.agriculture.toLocaleString()}</div></div>
-        <div class="card"><h3>🏭 Industrial Sector</h3><div class="value">👑 ${s.industry.toLocaleString()}</div></div>
-        <div class="card"><h3>⛵ Commercial Trade</h3><div class="value">👑 ${s.commerce.toLocaleString()}</div></div>
-        <div class="card"><h3>⚔️ Defense Upkeep</h3><div class="value">👑 ${Math.round(s.militaryExpenses).toLocaleString()}</div></div>
+        <div class="card"><h3>🌾 Agricultural Sector</h3><div class="value">₳ ${s.agriculture.toLocaleString()}</div></div>
+        <div class="card"><h3>🏭 Industrial Sector</h3><div class="value">₳ ${s.industry.toLocaleString()}</div></div>
+        <div class="card"><h3>⛵ Commercial Trade</h3><div class="value">₳ ${s.commerce.toLocaleString()}</div></div>
+        <div class="card"><h3>⚔️ Defense Upkeep</h3><div class="value">₳ ${Math.round(s.militaryExpenses).toLocaleString()}</div></div>
       `;
 
-      // Render Provinces
+      // 6. Render Provincial Table
       const provTbody = document.querySelector("#province-table tbody");
-      provTbody.innerHTML = "";
-      data.provinces.forEach(p => {
-        provTbody.innerHTML += `
-          <tr>
-            <td><strong>${p.name}</strong></td>
-            <td>Tier ${p.infraTier}</td>
-            <td>${p.prosperity}</td>
-            <td>${p.unrest}</td>
-            <td>👑 ${Math.round(p.taxYield).toLocaleString()}</td>
-          </tr>`;
-      });
+      if (data.provinces && data.provinces.length > 0) {
+        provTbody.innerHTML = "";
+        data.provinces.forEach(p => {
+          provTbody.innerHTML += `
+            <tr>
+              <td><strong>${p.name}</strong></td>
+              <td>Tier ${p.infraTier}</td>
+              <td>${p.prosperity}</td>
+              <td>${p.unrest}</td>
+              <td>₳ ${Math.round(p.taxYield).toLocaleString()}</td>
+            </tr>`;
+        });
+      } else {
+        provTbody.innerHTML = `<tr><td colspan="5">No provincial data found in Provinces sheet.</td></tr>`;
+      }
 
     } catch (err) {
       console.error("Failed to load engine data:", err);
-      document.getElementById("national-cards").innerHTML = `<div class="card" style="color: red;">Error fetching live data. Verify Apps Script deployment permissions.</div>`;
+      document.getElementById("national-cards").innerHTML = `<div class="card" style="color: red;">Error parsing live data: ${err.message}</div>`;
     }
   }
 
