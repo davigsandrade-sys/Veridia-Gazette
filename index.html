@@ -3,15 +3,15 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Commonwealth of Veridia — Imperial Gazette</title>
+  <title>Commonwealth of Veridia — State Gazette</title>
   <style>
     :root {
       --bg-color: #fbf8f3;
       --card-bg: #fff;
-      --border-color: #3b302a;
+      --border-color: #2b3a4a; /* Commonwealth Navy */
       --text-color: #2b2b2b;
       --accent-red: #8b0000;
-      --gold-accent: #c59b27;
+      --silver-accent: #708090;
     }
 
     body {
@@ -37,7 +37,6 @@
       box-shadow: 8px 8px 24px rgba(0,0,0,0.12);
     }
 
-    /* Gazette Header */
     header {
       text-align: center;
       border-bottom: 2px solid var(--border-color);
@@ -46,21 +45,20 @@
     }
 
     h1 {
-      font-size: 2.8rem;
+      font-size: 2.5rem;
       text-transform: uppercase;
-      letter-spacing: 3px;
+      letter-spacing: 2px;
       margin: 0;
       color: var(--border-color);
     }
 
     .subtitle {
       font-style: italic;
-      font-size: 1.1rem;
+      font-size: 1rem;
       margin-top: 5px;
-      color: #666;
+      color: #555;
     }
 
-    /* Navigation Tabs */
     nav {
       display: flex;
       justify-content: center;
@@ -89,7 +87,6 @@
       box-shadow: 2px 4px 8px rgba(0,0,0,0.15);
     }
 
-    /* Page View Containers */
     .page-section {
       display: none;
       animation: tabSlide 0.4s ease-out forwards;
@@ -104,7 +101,6 @@
       to { opacity: 1; transform: translateX(0); }
     }
 
-    /* Grid & Cards */
     .grid {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
@@ -116,14 +112,13 @@
       border: 1px solid #ccc;
       padding: 20px;
       background: #fafafa;
-      position: relative;
       transition: transform 0.3s ease, box-shadow 0.3s ease;
     }
 
     .card:hover {
       transform: translateY(-4px);
       box-shadow: 4px 6px 12px rgba(0,0,0,0.1);
-      border-color: var(--gold-accent);
+      border-color: var(--silver-accent);
     }
 
     .card h3 {
@@ -131,7 +126,7 @@
       border-bottom: 1px solid #ddd;
       padding-bottom: 8px;
       font-size: 1.1rem;
-      color: var(--accent-red);
+      color: var(--border-color);
     }
 
     .card .value {
@@ -140,21 +135,13 @@
       margin-top: 10px;
     }
 
-    /* Crisis Banner */
     .crisis-box {
       background-color: #fff3f3;
       border: 2px solid var(--accent-red);
       padding: 15px;
       margin-bottom: 25px;
-      animation: pulse 2s infinite alternate;
     }
 
-    @keyframes pulse {
-      from { box-shadow: 0 0 4px rgba(139,0,0,0.2); }
-      to { box-shadow: 0 0 12px rgba(139,0,0,0.5); }
-    }
-
-    /* Data Tables */
     table {
       width: 100%;
       border-collapse: collapse;
@@ -181,15 +168,15 @@
 
 <div class="container">
   <header>
-    <h1>📜 The Gazette of Veridia</h1>
-    <div class="subtitle">Official Commonwealth Economic Dispatch & Statistical Registry</div>
+    <h1>🏛️ Commonwealth of Veridia</h1>
+    <div class="subtitle">Official Gazette & National Economic Directory</div>
   </header>
 
   <nav>
     <button class="nav-btn active" onclick="switchTab('national')">🏛️ National Treasury</button>
     <button class="nav-btn" onclick="switchTab('provinces')">🗺️ Provinces</button>
     <button class="nav-btn" onclick="switchTab('sectors')">🏭 Economic Sectors</button>
-    <button class="nav-btn" onclick="switchTab('currency')">🪙 Currency & Mint</button>
+    <button class="nav-btn" onclick="switchTab('currency')">🪙 Currency & Reserve</button>
   </nav>
 
   <div id="crisis-section" class="crisis-box" style="display: none;">
@@ -198,9 +185,9 @@
   </div>
 
   <div id="page-national" class="page-section active">
-    <h2>National Indicators</h2>
+    <h2>Republic Balance & Indicators</h2>
     <div class="grid" id="national-cards">
-      <div class="card">Loading updates from the Treasury...</div>
+      <div class="card">Connecting to Commonwealth Treasury...</div>
     </div>
   </div>
 
@@ -223,19 +210,19 @@
   </div>
 
   <div id="page-sectors" class="page-section">
-    <h2>Economic Breakdown by Sector</h2>
+    <h2>Sector Output Breakdown</h2>
     <div class="grid" id="sector-cards">
-      <div class="card">Loading sector production values...</div>
+      <div class="card">Loading sector data...</div>
     </div>
   </div>
 
   <div id="page-currency" class="page-section">
-    <h2>Imperial Mint & Monetary System</h2>
+    <h2>Commonwealth Mint & Monetary Reserve</h2>
     <div class="card" style="margin-bottom: 20px;">
       <h3>Official Legal Tender</h3>
-      <p>Standard Currency: <strong id="currency-name">Veridian Austral (₳)</strong></p>
-      <p>Gold Standard backing: <strong id="gold-rate">0.25 oz Gold per ₳</strong></p>
-      <p>Foreign Exchange Reserves: <strong id="reserve-val">₳ 0</strong></p>
+      <p>Standard Currency: <strong id="currency-name">Veridian Crown (👑)</strong></p>
+      <p>Monetary Standard: <strong id="gold-rate">0.75 oz Fine Silver per Crown</strong></p>
+      <p>Foreign Reserve Vaults: <strong id="reserve-val">👑 0</strong></p>
     </div>
     <h3>Market Commodity Price Registry</h3>
     <table id="market-table">
@@ -246,17 +233,16 @@
         </tr>
       </thead>
       <tbody>
-        <tr><td colspan="2">Fetching exchange rates...</td></tr>
+        <tr><td colspan="2">Fetching commodity prices...</td></tr>
       </tbody>
     </table>
   </div>
 </div>
 
 <script>
-  // 🔗 REPLACE THIS WITH YOUR DEPLOYED APPS SCRIPT WEB APP URL!
-  const API_URL = "https://script.google.com/macros/s/AKfycbyYqveTzbfirs5pnyw3qe4OR_Uo0BCchlSNcSv9LnmP4dWZ-ut6cP65L414JTRfxPg/exec";
+  // 🔗 REPLACE WITH YOUR DEPLOYED APPS SCRIPT URL!
+  const API_URL = "YOUR_APPS_SCRIPT_WEB_APP_URL_HERE";
 
-  // Tab Switching Function
   function switchTab(tabId) {
     document.querySelectorAll('.page-section').forEach(p => p.classList.remove('active'));
     document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
@@ -265,10 +251,10 @@
     event.target.classList.add('active');
   }
 
-  // Fetch Engine Data
   async function fetchEngineData() {
     try {
-      const res = await fetch(API_URL);
+      // Added redirect handling to prevent Google Apps Script fetch blocks
+      const res = await fetch(API_URL, { redirect: "follow" });
       const data = await res.json();
 
       // Render Crises
@@ -284,34 +270,34 @@
         });
       }
 
-      // Render National
+      // Render National Cards
       const n = data.national;
       document.getElementById("national-cards").innerHTML = `
-        <div class="card"><h3>Treasury Balance</h3><div class="value">₳ ${Math.round(n.treasury).toLocaleString()}</div></div>
-        <div class="card"><h3>National Debt</h3><div class="value">₳ ${Math.round(n.debt).toLocaleString()}</div></div>
+        <div class="card"><h3>National Treasury</h3><div class="value">👑 ${Math.round(n.treasury).toLocaleString()}</div></div>
+        <div class="card"><h3>Commonwealth Debt</h3><div class="value">👑 ${Math.round(n.debt).toLocaleString()}</div></div>
         <div class="card"><h3>Stability Index</h3><div class="value">${Math.round(n.stability)} / 100</div></div>
         <div class="card"><h3>Inflation Rate</h3><div class="value">${n.inflation.toFixed(1)}%</div></div>
       `;
 
-      // Render Currency Info
+      // Render Currency Details
       document.getElementById("currency-name").innerText = n.currencyName;
-      document.getElementById("gold-rate").innerText = `${n.goldStandardRate} oz Gold per ₳`;
-      document.getElementById("reserve-val").innerText = `₳ ${n.foreignReserve.toLocaleString()}`;
+      document.getElementById("gold-rate").innerText = n.standardRate;
+      document.getElementById("reserve-val").innerText = `👑 ${n.foreignReserve.toLocaleString()}`;
 
-      // Render Market
+      // Render Market Prices
       const marketTbody = document.querySelector("#market-table tbody");
       marketTbody.innerHTML = "";
       data.market.forEach(m => {
-        marketTbody.innerHTML += `<tr><td><strong>${m.commodity}</strong></td><td>₳ ${m.price.toFixed(2)}</td></tr>`;
+        marketTbody.innerHTML += `<tr><td><strong>${m.commodity}</strong></td><td>👑 ${m.price.toFixed(2)}</td></tr>`;
       });
 
-      // Render Sectors
+      // Render Sector Cards
       const s = data.sectors;
       document.getElementById("sector-cards").innerHTML = `
-        <div class="card"><h3>🌾 Agriculture Output</h3><div class="value">₳ ${s.agriculture.toLocaleString()}</div></div>
-        <div class="card"><h3>🏭 Industrial Production</h3><div class="value">₳ ${s.industry.toLocaleString()}</div></div>
-        <div class="card"><h3>⛵ Commercial Trade</h3><div class="value">₳ ${s.commerce.toLocaleString()}</div></div>
-        <div class="card"><h3>⚔️ Military Expenditure</h3><div class="value">₳ ${Math.round(s.militaryExpenses).toLocaleString()}</div></div>
+        <div class="card"><h3>🌾 Agricultural Sector</h3><div class="value">👑 ${s.agriculture.toLocaleString()}</div></div>
+        <div class="card"><h3>🏭 Industrial Sector</h3><div class="value">👑 ${s.industry.toLocaleString()}</div></div>
+        <div class="card"><h3>⛵ Commercial Trade</h3><div class="value">👑 ${s.commerce.toLocaleString()}</div></div>
+        <div class="card"><h3>⚔️ Defense Upkeep</h3><div class="value">👑 ${Math.round(s.militaryExpenses).toLocaleString()}</div></div>
       `;
 
       // Render Provinces
@@ -324,12 +310,13 @@
             <td>Tier ${p.infraTier}</td>
             <td>${p.prosperity}</td>
             <td>${p.unrest}</td>
-            <td>₳ ${Math.round(p.taxYield).toLocaleString()}</td>
+            <td>👑 ${Math.round(p.taxYield).toLocaleString()}</td>
           </tr>`;
       });
 
     } catch (err) {
       console.error("Failed to load engine data:", err);
+      document.getElementById("national-cards").innerHTML = `<div class="card" style="color: red;">Error fetching live data. Verify Apps Script deployment permissions.</div>`;
     }
   }
 
