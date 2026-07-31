@@ -9,15 +9,15 @@
 
   <style>
     :root {
-      --sidebar-bg: #111625;
-      --content-bg: rgba(23, 30, 44, 0.94);
-      --card-bg: #1c2536;
-      --accent-blue: #3b82f6;
-      --accent-gold: #eab308;
-      --text-light: #f3f4f6;
-      --border-color: #2e3b52;
-      --province-hover: #ffffff;
-      --province-selected: #eab308;
+      --sidebar-bg: #140c0e;
+      --content-bg: rgba(28, 12, 15, 0.70);
+      --card-bg: rgba(40, 16, 20, 0.85);
+      --accent-gold: #d4af37;
+      --accent-red: #a93226;
+      --border-gold: #8c6d31;
+      --text-light: #f5e6d3;
+      --province-hover: #f5e6d3;
+      --province-selected: #d4af37;
     }
 
     * {
@@ -25,14 +25,15 @@
     }
 
     body {
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      font-family: 'Georgia', 'Times New Roman', serif;
       margin: 0;
       padding: 0;
       color: var(--text-light);
 
-      /* 🖼️ LOCAL CUSTOM BACKGROUND IMAGE SETUP:
-         Ensure your background image file (40582.webp) is in your repository! */
-      background-image: url('background.jpg');
+      /* Victorian Red Tint Overlay with standard webp map file */
+      background: 
+        linear-gradient(rgba(70, 15, 20, 0.35), rgba(25, 8, 10, 0.65)),
+        url('background.jpg');
       background-size: cover;
       background-position: center;
       background-attachment: fixed;
@@ -44,32 +45,50 @@
       min-height: 100vh;
     }
 
-    /* Left Vertical Sidebar */
+    /* Victorian Style Sidebar */
     sidebar {
-      width: 260px;
+      width: 280px;
       background-color: var(--sidebar-bg);
-      border-right: 1px solid var(--border-color);
+      border-right: 2px solid var(--border-gold);
       display: flex;
       flex-direction: column;
       padding: 25px 15px;
       position: fixed;
       height: 100vh;
       overflow-y: auto;
+      box-shadow: 5px 0 15px rgba(0,0,0,0.7);
       z-index: 100;
     }
 
+    .sidebar-emblem {
+      width: 80px;
+      height: 80px;
+      margin: 0 auto 10px auto;
+      border: 2px solid var(--accent-gold);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 2.2rem;
+      background: radial-gradient(circle, #3d1014 0%, #140c0e 100%);
+      box-shadow: 0 0 10px rgba(212, 175, 55, 0.3);
+    }
+
     sidebar h1 {
-      font-size: 1.3rem;
+      font-size: 1.2rem;
       text-transform: uppercase;
-      letter-spacing: 1px;
-      margin: 0 0 5px 0;
-      color: var(--accent-blue);
+      letter-spacing: 2px;
+      margin: 0;
+      color: var(--accent-gold);
+      text-align: center;
     }
 
     sidebar .subtitle {
       font-size: 0.8rem;
-      color: #9ca3af;
-      margin-bottom: 30px;
+      color: #b39b82;
+      margin-bottom: 25px;
+      text-align: center;
+      font-style: italic;
     }
 
     .nav-list {
@@ -78,28 +97,44 @@
       gap: 10px;
     }
 
+    /* Victoria 3 Style Ornate Buttons */
     .nav-btn {
-      background: transparent;
-      border: 1px solid var(--border-color);
+      background: linear-gradient(180deg, #3a171a 0%, #200b0d 100%);
+      border: 1px solid var(--border-gold);
       color: var(--text-light);
+      font-family: 'Georgia', serif;
       font-size: 0.95rem;
       padding: 12px 16px;
       cursor: pointer;
       text-align: left;
-      border-radius: 6px;
+      border-radius: 3px;
+      box-shadow: inset 0 1px 0 rgba(255,255,255,0.1), 0 2px 5px rgba(0,0,0,0.5);
       transition: all 0.2s ease;
-      font-weight: 600;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-weight: bold;
     }
 
     .nav-btn:hover, .nav-btn.active {
-      background-color: var(--accent-blue);
-      border-color: var(--accent-blue);
+      background: linear-gradient(180deg, var(--accent-red) 0%, #5c1d18 100%);
+      border-color: var(--accent-gold);
       color: #fff;
+      box-shadow: 0 0 8px rgba(212, 175, 55, 0.4);
     }
 
-    /* Right Main Content Panel */
+    .system-status {
+      margin-top: auto;
+      border: 1px solid var(--border-gold);
+      padding: 10px;
+      background: rgba(0,0,0,0.4);
+      text-align: center;
+      border-radius: 3px;
+    }
+
+    /* Main Area */
     main {
-      margin-left: 260px;
+      margin-left: 280px;
       flex: 1;
       padding: 35px;
       background-color: var(--content-bg);
@@ -120,7 +155,7 @@
       to { opacity: 1; transform: translateY(0); }
     }
 
-    /* Grids & Cards */
+    /* Custom Ornate Cards */
     .grid {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
@@ -130,22 +165,26 @@
 
     .card {
       background: var(--card-bg);
-      border: 1px solid var(--border-color);
-      border-radius: 8px;
+      border: 1px solid var(--border-gold);
+      border-radius: 4px;
       padding: 20px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.6);
       transition: transform 0.2s ease, border-color 0.2s ease;
     }
 
     .card:hover {
       transform: translateY(-3px);
-      border-color: var(--accent-blue);
+      border-color: var(--accent-gold);
     }
 
     .card h3 {
       margin: 0 0 10px 0;
       font-size: 0.9rem;
       text-transform: uppercase;
-      color: #9ca3af;
+      letter-spacing: 1px;
+      color: var(--accent-gold);
+      border-bottom: 1px solid rgba(212, 175, 55, 0.3);
+      padding-bottom: 5px;
     }
 
     .card .value {
@@ -155,17 +194,20 @@
     }
 
     .crisis-box {
-      background-color: rgba(220, 38, 38, 0.15);
-      border: 1px solid #ef4444;
-      border-radius: 8px;
+      background-color: rgba(169, 50, 38, 0.25);
+      border: 1px solid var(--accent-red);
+      border-radius: 4px;
       padding: 20px;
       margin-bottom: 25px;
+      box-shadow: 0 0 10px rgba(169, 50, 38, 0.3);
     }
 
     .crisis-box h2 {
-      color: #ef4444;
+      color: #f87171;
       margin-top: 0;
       font-size: 1.1rem;
+      border-bottom: 1px solid #f87171;
+      padding-bottom: 5px;
     }
 
     /* Tables */
@@ -174,30 +216,32 @@
       border-collapse: collapse;
       margin-top: 20px;
       background: var(--card-bg);
-      border-radius: 8px;
+      border-radius: 4px;
       overflow: hidden;
-      border: 1px solid var(--border-color);
+      border: 1px solid var(--border-gold);
+      box-shadow: 0 4px 12px rgba(0,0,0,0.5);
     }
 
     th, td {
       padding: 14px 18px;
       text-align: left;
-      border-bottom: 1px solid var(--border-color);
+      border-bottom: 1px solid rgba(140, 109, 49, 0.4);
     }
 
     th {
-      background-color: #111827;
-      color: var(--accent-blue);
+      background-color: #140c0e;
+      color: var(--accent-gold);
       text-transform: uppercase;
-      font-size: 0.8rem;
+      font-size: 0.85rem;
       letter-spacing: 1px;
+      border-bottom: 2px solid var(--border-gold);
     }
 
     tr:hover {
-      background-color: #26334d;
+      background-color: rgba(92, 29, 24, 0.4);
     }
 
-    /* 🗺️ INTERACTIVE SVG MAP STYLING */
+    /* Map Layout */
     #map-wrapper {
       display: grid;
       grid-template-columns: 2fr 1fr;
@@ -205,52 +249,58 @@
       margin-top: 20px;
     }
 
-    #map-container {
-      background: var(--card-bg);
-      border: 1px solid var(--border-color);
-      border-radius: 8px;
-      padding: 20px;
+    .map-container {
+      position: relative;
+      width: 100%;
+      border: 2px solid var(--border-gold);
+      background-color: rgba(10, 5, 7, 0.85);
+      box-shadow: inset 0 0 20px rgba(0,0,0,0.8);
+      overflow: hidden;
+      border-radius: 4px;
+      padding: 10px;
       text-align: center;
     }
 
-    /* SVG Path Hover & Selection Effects */
-    #map-container svg {
+    .map-container svg {
       width: 100%;
       height: auto;
       max-height: 550px;
+      display: block;
     }
 
-    #map-container svg path {
-      stroke-width: 2;
-      transition: all 0.2s ease;
+    /* Interactive SVG Province Styles */
+    .province-path {
       cursor: pointer;
+      stroke-width: 2;
+      transition: all 0.25s ease;
     }
 
-    #map-container svg path:hover {
-      fill-opacity: 0.8;
-      stroke: var(--province-hover);
-      stroke-width: 3;
-      filter: drop-shadow(0 0 8px var(--accent-blue));
+    .province-path:hover {
+      fill-opacity: 0.85 !important;
+      stroke: var(--accent-gold) !important;
+      stroke-width: 3px !important;
+      filter: drop-shadow(0 0 6px var(--accent-gold));
     }
 
-    #map-container svg path.selected {
+    .province-path.selected {
       fill: var(--province-selected) !important;
       fill-opacity: 0.85 !important;
       stroke: #ffffff !important;
-      stroke-width: 3;
+      stroke-width: 3px !important;
     }
 
     #province-details-panel {
       background: var(--card-bg);
-      border: 1px solid var(--border-color);
-      border-radius: 8px;
+      border: 1px solid var(--border-gold);
+      border-radius: 4px;
       padding: 20px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.6);
     }
 
     .chart-box {
       background: var(--card-bg);
-      border: 1px solid var(--border-color);
-      border-radius: 8px;
+      border: 1px solid var(--border-gold);
+      border-radius: 4px;
       padding: 20px;
       margin-top: 25px;
     }
@@ -260,14 +310,20 @@
 
 <div class="app-layout">
   <sidebar>
-    <h1>🏛️ Veridia Gazette</h1>
-    <div class="subtitle">Commonwealth Directory</div>
+    <div class="sidebar-emblem" title="Imperial Emblem">🦅</div>
+    <h1>Veridia</h1>
+    <div class="subtitle">Imperial Gazette</div>
 
     <div class="nav-list">
-      <button class="nav-btn active" onclick="switchTab('national')">🏛️ State Treasury</button>
-      <button class="nav-btn" onclick="switchTab('provinces')">🗺️ Provinces & Map</button>
-      <button class="nav-btn" onclick="switchTab('sectors')">🏭 Economic Sectors</button>
-      <button class="nav-btn" onclick="switchTab('currency')">🪙 Mint & Markets</button>
+      <button class="nav-btn active" onclick="switchTab('national')"><span>🏛️</span> State Treasury</button>
+      <button class="nav-btn" onclick="switchTab('provinces')"><span>🗺️</span> Territorial Map</button>
+      <button class="nav-btn" onclick="switchTab('sectors')"><span>🏭</span> Strategic Industries</button>
+      <button class="nav-btn" onclick="switchTab('currency')"><span>🪙</span> Mint & Markets</button>
+    </div>
+
+    <div class="system-status">
+      <small style="color: var(--accent-gold); display: block; margin-bottom: 4px;">SYSTEM STATUS</small>
+      <small style="color: #65CD74;">Engine Active</small>
     </div>
   </sidebar>
 
@@ -288,32 +344,34 @@
       <h2>Interactive Provincial Territory Map</h2>
 
       <div id="map-wrapper">
-        <div id="map-container">
+        <div class="map-container">
           <svg width="1234" height="823" viewBox="0 0 1234 823" fill="none" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-            <rect width="1234" height="823" fill="url(#pattern0_1_2)"/>
+            <rect width="1234" height="823" fill="url(#pattern0_2_2)"/>
+            
             <g id="provinces-group">
-              <path id="Phillippia" d="M31.1758 179.078L0.675812 138.578L10.1758 130.078C12.2808 139.911 18.4277 159.478 26.1758 159.078C35.861 158.578 31.1758 151.078 48.1758 138.578C65.1758 126.078 68.1758 125.578 71.6758 125.578C75.1758 125.578 84.6758 103.078 84.6758 92.578C84.6758 82.078 95.6758 83.578 104.676 81.578C113.676 79.578 111.676 61.578 108.176 61.578C104.676 61.578 123.676 43.578 128.676 43.578C132.676 43.578 155.009 25.578 165.676 16.578L191.176 0.577972L211.676 11.578L240.676 33.578L277.676 43.578L293.676 71.578L321.676 61.578L353.176 77.578L417.676 103.078L423.676 125.578L373.676 164.078L406.676 247.078H312.676L265.676 309.078L235.176 274.078L95.6758 288.578L84.6758 262.078L62.6758 236.078L84.6758 227.578L31.1758 179.078Z" fill="#FAD02A" fill-opacity="0.47" stroke="#1A1A1A"/>
-              <path id="New Brunswick" d="M22.6164 111.019L0.616425 52.519L27.1164 37.019L160.116 33.019L178.616 71.019L218.616 37.019L239.116 0.519012L333.116 6.51901L353.116 47.519L349.116 111.019L319.616 165.019L273.616 211.019L308.616 246.519V254.019L313.616 275.519L302.616 301.519L313.616 339.519L273.616 353.519L239.116 339.519L197.616 353.519L157.616 383.019L164.616 339.519L127.116 323.519L106.116 301.519L94.1164 280.519L106.116 263.519L94.1164 219.519L89.1164 185.519L69.6164 148.019L45.6164 128.019L22.6164 111.019Z" fill="#FF0000" fill-opacity="0.55" stroke="#1A1A1A"/>
-              <path id="Maris" d="M184.081 36.5L158.081 0.5H136.081L103.081 15V44.5L80.5809 71.5L69.0809 106.5L46.5809 124L34.0809 153L46.5809 174L34.0809 209L0.580948 240.5L18.0809 289.5V312L34.0809 305.5L56.0809 289.5L80.5809 276V289.5L88.0809 320.5L136.081 332.5L197.581 336.5L216.081 354H244.081L252.081 312L229.581 269L216.081 240.5L197.581 220L203.081 167L209.081 113L216.081 106.5L223.081 90.5L209.081 51L184.081 36.5Z" fill="#0095FF" fill-opacity="0.33" stroke="#1A1A1A"/>
-              <path id="Lowenwood" d="M38.5912 135L1.09118 91.5H14.5912L32.5912 61.5L47.0912 45.5L76.0912 0.5H100.591L138.091 31.5H196.591L286.091 13.5L273.091 52L286.091 69.5L273.091 108L245.091 135L255.091 184.5L264.591 227V275L239.091 293V281L218.091 286L204.591 317L157.091 310.5L138.091 275H84.0912L14.5912 254.5V234.5L38.5912 227L28.0912 184.5L38.5912 135Z" fill="#65CD74" fill-opacity="0.6" stroke="#1A1A1A"/>
-              <path id="Hartland" d="M93.5714 46.644L59.0714 21.144L43.0714 26.644L31.5714 39.144L14.5714 50.144L0.571354 70.144L12.0714 96.144L31.5714 119.644V150.644H43.0714L56.0714 171.644L63.5714 196.144L59.0714 208.644V229.144L63.5714 240.644L59.0714 257.144L103.571 271.144L122.071 288.144H165.571H233.071L255.571 284.644L287.571 276.144L296.071 271.144L292.071 250.144H301.071L309.571 236.644V221.644L324.571 213.144L339.071 191.644L334.571 182.644L329.571 169.644L360.071 162.644V150.644L353.071 127.644H360.071L373.071 115.644H393.071V102.644L386.571 96.144L413.571 82.644L426.071 70.144L404.071 34.644H386.571L360.071 21.144L334.571 0.644043L309.571 21.144L287.571 16.144L273.571 21.144L252.071 16.144L223.071 26.644L214.571 21.144L197.071 26.644L165.571 34.644L116.571 39.144L93.5714 46.644Z" fill="#0800FF" fill-opacity="0.27" stroke="#1A1A1A"/>
+              <path id="New Brunswick" class="province-path" d="M330.5 424L308.5 365.5L335 350L468 346L486.5 384L526.5 350L547 313.5L641 319.5L661 360.5L657 424L627.5 478L581.5 524L616.5 559.5V567L621.5 588.5L610.5 614.5L621.5 652.5L581.5 666.5L547 652.5L505.5 666.5L465.5 696L472.5 652.5L435 636.5L414 614.5L402 593.5L414 576.5L402 532.5L397 498.5L377.5 461L353.5 441L330.5 424Z" fill="#FF0000" fill-opacity="0.55" stroke="#1A1A1A"/>
+              <path id="Lowenwood" class="province-path" d="M621 563L583.5 519.5H597L615 489.5L629.5 473.5L658.5 428.5H683L720.5 459.5H779L868.5 441.5L855.5 480L868.5 497.5L855.5 536L827.5 563L837.5 612.5L847 655V703L821.5 721V709L800.5 714L787 745L739.5 738.5L720.5 703H666.5L597 682.5V662.5L621 655L610.5 612.5L621 563Z" fill="#65CD74" fill-opacity="0.6" stroke="#1A1A1A"/>
+              <path id="Maris" class="province-path" d="M1007.5 360L981.5 324H959.5L926.5 338.5V368L904 395L892.5 430L870 447.5L857.5 476.5L870 497.5L857.5 532.5L824 564L841.5 613V635.5L857.5 629L879.5 613L904 599.5V613L911.5 644L959.5 656L1021 660L1039.5 677.5H1067.5L1075.5 635.5L1053 592.5L1039.5 564L1021 543.5L1026.5 490.5L1032.5 436.5L1039.5 430L1046.5 414L1032.5 374.5L1007.5 360Z" fill="#0095FF" fill-opacity="0.33" stroke="#1A1A1A"/>
+              <path id="Hartland" class="province-path" d="M692.5 215L658 189.5L642 195L630.5 207.5L613.5 218.5L599.5 238.5L611 264.5L630.5 288V319H642L655 340L662.5 364.5L658 377V397.5L662.5 409L658 425.5L702.5 439.5L721 456.5H764.5H832L854.5 453L886.5 444.5L895 439.5L891 418.5H900L908.5 405V390L923.5 381.5L938 360L933.5 351L928.5 338L959 331V319L952 296H959L972 284H992V271L985.5 264.5L1012.5 251L1025 238.5L1003 203H985.5L959 189.5L933.5 169L908.5 189.5L886.5 184.5L872.5 189.5L851 184.5L822 195L813.5 189.5L796 195L764.5 203L715.5 207.5L692.5 215Z" fill="#0800FF" fill-opacity="0.27" stroke="#1A1A1A"/>
+              <path id="Phillippia" class="province-path" d="M254.5 247.5L224 207L233.5 198.5C235.605 208.333 241.752 227.9 249.5 227.5C259.185 227 254.5 219.5 271.5 207C288.5 194.5 291.5 194 295 194C298.5 194 308 171.5 308 161C308 150.5 319 152 328 150C337 148 335 130 331.5 130C328 130 347 112 352 112C356 112 378.333 94 389 85L414.5 69L435 80L464 102L501 112L517 140L545 130L576.5 146L641 171.5L647 194L597 232.5L630 315.5H536L489 377.5L458.5 342.5L319 357L308 330.5L286 304.5L308 296L254.5 247.5Z" fill="#FAD02A" fill-opacity="0.47" stroke="#1A1A1A"/>
             </g>
+            
             <defs>
-              <pattern id="pattern0_1_2" patternContentUnits="objectBoundingBox" width="1" height="1">
-                <use xlink:href="#image0_1_2" transform="scale(0.000810373 0.00121507)"/>
+              <pattern id="pattern0_2_2" patternContentUnits="objectBoundingBox" width="1" height="1">
+                <use xlink:href="#image0_2_2" transform="scale(0.000810373 0.00121507)"/>
               </pattern>
-              <image id="image0_1_2" width="1234" height="823" preserveAspectRatio="none" href="40582.webp"/>
+              <image id="image0_2_2" width="1234" height="823" preserveAspectRatio="none" xlink:href="40582.webp"/>
             </defs>
           </svg>
         </div>
 
         <div id="province-details-panel">
-          <h3 id="panel-title" style="color: var(--accent-blue); margin-top: 0;">Click a Province</h3>
+          <h3 id="panel-title" style="color: var(--accent-gold); margin-top: 0;">Click a Province</h3>
           <p id="panel-body">Select any territory on the map to inspect provincial statistics, unrest levels, and tax revenue yields.</p>
         </div>
       </div>
 
-      <h3>Provincial Registry Data</h3>
+      <h3 style="margin-top: 30px; color: var(--accent-gold);">Provincial Registry Data</h3>
       <table id="province-table">
         <thead>
           <tr>
@@ -349,7 +407,7 @@
         <p>State Reserve Vaults: <strong id="reserve-val">₳ 45,000</strong></p>
       </div>
 
-      <h3>Market Commodity Prices</h3>
+      <h3 style="color: var(--accent-gold);">Market Commodity Prices</h3>
       <table id="market-table">
         <thead>
           <tr>
@@ -366,7 +424,7 @@
 </div>
 
 <script>
-  // 🔗 REPLACE WITH YOUR DEPLOYED APPS SCRIPT WEB API URL!
+  // 🔗 PASTE YOUR DEPLOYED GOOGLE APPS SCRIPT WEB APP URL HERE:
   const API_URL = "https://script.google.com/macros/s/AKfycbx43_e5dzt76wsmMa_cG2XLChe8xSRqOnPqrvEq0W4bT5svXkGmx2wxxT_X6DiquBYx/exec";
 
   let loadedProvincesData = [];
@@ -377,7 +435,7 @@
     document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
 
     document.getElementById(`page-${tabId}`).classList.add('active');
-    event.target.classList.add('active');
+    event.currentTarget.classList.add('active');
   }
 
   async function fetchEngineData() {
@@ -450,12 +508,11 @@
     } catch (err) {
       console.error("Failed to load engine data:", err);
       document.getElementById("national-cards").innerHTML = `
-        <div class="card" style="border-color: #ef4444; color: #ef4444; grid-column: 1/-1;">
-          <h3>⚠️ Data Connection Failed</h3>
-          <p>Ensure Google Apps Script deployment permissions are set to "Anyone".</p>
+        <div class="card" style="border-color: var(--accent-red); color: #f87171; grid-column: 1/-1;">
+          <h3>⚠️ Data Connection Required</h3>
+          <p>Please insert your deployed Apps Script URL into line 319 of <code>index.html</code>.</p>
         </div>`;
       
-      // Still enable offline map clicks if sheet is disconnected
       bindSVGMapEvents();
     }
   }
@@ -466,7 +523,6 @@
 
     paths.forEach(path => {
       path.addEventListener('click', function() {
-        // Clear previously selected styling
         paths.forEach(p => p.classList.remove('selected'));
         this.classList.add('selected');
 
@@ -486,13 +542,13 @@
           `;
         } else {
           panelTitle.innerText = `🏛️ ${provinceName}`;
-          panelBody.innerHTML = `<p><em>Selected Territory: <strong>${provinceName}</strong></em></p><p>Connect your deployed Apps Script URL to populate live spreadsheet metrics.</p>`;
+          panelBody.innerHTML = `<p><em>Selected Territory: <strong>${provinceName}</strong></em></p><p>Connect your deployed Apps Script URL to populate live metrics.</p>`;
         }
       });
     });
   }
 
-  // Render Sectors Graph
+  // Render Sectors Graph using Chart.js
   function renderChart(sectors) {
     const ctx = document.getElementById('sectorChart').getContext('2d');
     if (sectorChartInstance) sectorChartInstance.destroy();
@@ -504,18 +560,18 @@
         datasets: [{
           label: 'Output Value (₳)',
           data: [sectors.agriculture, sectors.industry, sectors.commerce, sectors.militaryExpenses],
-          backgroundColor: ['#10b981', '#3b82f6', '#eab308', '#ef4444']
+          backgroundColor: ['#d4af37', '#a93226', '#3b82f6', '#10b981']
         }]
       },
       options: {
         responsive: true,
         plugins: {
           legend: { display: false },
-          title: { display: true, text: 'Sector Yields', color: '#f3f4f6' }
+          title: { display: true, text: 'Sector Yields', color: '#f5e6d3' }
         },
         scales: {
-          x: { ticks: { color: '#9ca3af' }, grid: { color: '#2e3b52' } },
-          y: { ticks: { color: '#9ca3af' }, grid: { color: '#2e3b52' } }
+          x: { ticks: { color: '#b39b82' }, grid: { color: 'rgba(140, 109, 49, 0.3)' } },
+          y: { ticks: { color: '#b39b82' }, grid: { color: 'rgba(140, 109, 49, 0.3)' } }
         }
       }
     });
