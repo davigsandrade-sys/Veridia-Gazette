@@ -235,15 +235,39 @@
       background: var(--card-bg);
       border: 1px solid var(--border-gold);
       border-radius: 4px;
-      padding: 20px;
+      padding: 25px;
       margin-top: 20px;
     }
 
-    /* Input & Form Styling */
+    /* Auth Switcher Tabs */
+    .auth-tabs {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 20px;
+      border-bottom: 1px solid var(--border-gold);
+      padding-bottom: 10px;
+    }
+
+    .auth-tab-btn {
+      background: none;
+      border: none;
+      color: #b39b82;
+      font-size: 1.1rem;
+      font-family: 'Georgia', serif;
+      cursor: pointer;
+      padding: 5px 15px;
+    }
+
+    .auth-tab-btn.active {
+      color: var(--accent-gold);
+      font-weight: bold;
+      border-bottom: 2px solid var(--accent-gold);
+    }
+
     input, select, button.action-btn {
       width: 100%;
       padding: 12px;
-      margin-top: 8px;
+      margin-top: 6px;
       margin-bottom: 16px;
       background: #140c0e;
       border: 1px solid var(--border-gold);
@@ -343,20 +367,55 @@
     </div>
 
     <div id="page-player" class="page-section">
-      <h2>Player Private Portfolio & Orders</h2>
+      <h2>Cabinet Registry & Player Portfolio</h2>
 
-      <div id="player-login-box" class="form-box">
-        <h3 style="color: var(--accent-gold); margin-top: 0;">Cabinet Member Login</h3>
-        <p>Enter your registered Player Name and Passcode / PIN to access financial management and execute turn actions.</p>
-        
-        <label>Player Name:</label>
-        <input type="text" id="login-name" placeholder="e.g. Lord Harrington" />
+      <div id="player-auth-box" class="form-box">
+        <div class="auth-tabs">
+          <button class="auth-tab-btn active" id="tab-login-btn" onclick="toggleAuthMode('login')">Cabinet Login</button>
+          <button class="auth-tab-btn" id="tab-register-btn" onclick="toggleAuthMode('register')">New Citizen Registration</button>
+        </div>
 
-        <label>Passcode / PIN:</label>
-        <input type="password" id="login-passcode" placeholder="****" />
+        <div id="form-login">
+          <p>Enter your registered Player Name and Passcode / PIN to access your portfolio.</p>
+          <label>Player Name:</label>
+          <input type="text" id="login-name" placeholder="e.g. Lord Harrington" />
 
-        <button class="action-btn" onclick="authenticatePlayer()">Login to Portfolio</button>
-        <div id="login-error" style="color: #f87171; display: none; margin-top: 10px;"></div>
+          <label>Passcode / PIN:</label>
+          <input type="password" id="login-passcode" placeholder="****" />
+
+          <button class="action-btn" onclick="authenticatePlayer()">Sign In to Portfolio</button>
+        </div>
+
+        <div id="form-register" style="display: none;">
+          <p>Register a new persona in the Commonwealth of Veridia to receive starting capital and political influence.</p>
+          
+          <label>Full Name / Title:</label>
+          <input type="text" id="reg-name" placeholder="e.g. Baron August von Crane" />
+
+          <label>Set Passcode / PIN:</label>
+          <input type="password" id="reg-passcode" placeholder="****" />
+
+          <label>Home Province:</label>
+          <select id="reg-province">
+            <option value="Hartland">Hartland (Capital)</option>
+            <option value="Phillippia">Phillippia</option>
+            <option value="New Brunswick">New Brunswick</option>
+            <option value="Lowenwood">Lowenwood</option>
+            <option value="Maris">Maris</option>
+          </select>
+
+          <label>Socio-Economic Class:</label>
+          <select id="reg-class">
+            <option value="Merchant">Merchant (+Trade Focus)</option>
+            <option value="Landowner">Landowner (+Higher Cash)</option>
+            <option value="Industrialist">Industrialist (+Factory Focus)</option>
+            <option value="Politician">Politician (+Higher Political Influence)</option>
+          </select>
+
+          <button class="action-btn" onclick="registerPlayer()">Register Citizen Account</button>
+        </div>
+
+        <div id="auth-status" style="margin-top: 10px;"></div>
       </div>
 
       <div id="player-dashboard-content" style="display: none;">
@@ -364,7 +423,7 @@
 
         <div class="form-box">
           <h3 style="color: var(--accent-gold); margin-top: 0;">Submit Executive Action</h3>
-          <p>Orders submitted here will be processed during the next turn publication.</p>
+          <p>Orders submitted here will be queued and processed during the next turn execution.</p>
 
           <label>Action Type:</label>
           <select id="action-type">
@@ -396,7 +455,6 @@
 </div>
 
 <script>
-  // Deployed Google Apps Script Web App URL
   const API_URL = "https://script.google.com/macros/s/AKfycbx43_e5dzt76wsmMa_cG2XLChe8xSRqOnPqrvEq0W4bT5svXkGmx2wxxT_X6DiquBYx/exec";
 
   let loadedProvincesData = [];
@@ -411,7 +469,29 @@
     event.currentTarget.classList.add('active');
   }
 
-  // 1. FETCH PUBLIC GAZETTE DATA
+  function toggleAuthMode(mode) {
+    const loginForm = document.getElementById("form-login");
+    const regForm = document.getElementById("form-register");
+    const loginBtn = document.getElementById("tab-login-btn");
+    const regBtn = document.getElementById("tab-register-btn");
+    const statusDiv = document.getElementById("auth-status");
+
+    statusDiv.innerHTML = "";
+
+    if (mode === 'login') {
+      loginForm.style.display = "block";
+      regForm.style.display = "none";
+      loginBtn.classList.add("active");
+      regBtn.classList.remove("active");
+    } else {
+      loginForm.style.display = "none";
+      regForm.style.display = "block";
+      regBtn.classList.add("active");
+      loginBtn.classList.remove("active");
+    }
+  }
+
+  // 1. FETCH PUBLIC DATA
   async function fetchEngineData() {
     try {
       const res = await fetch(API_URL, { redirect: "follow" });
@@ -432,7 +512,7 @@
         });
       }
 
-      // National Treasury Cards
+      // National Treasury
       const n = data.national;
       document.getElementById("national-cards").innerHTML = `
         <div class="card"><h3>Treasury Balance</h3><div class="value">₳ ${Math.round(n.treasury).toLocaleString()}</div></div>
@@ -441,7 +521,7 @@
         <div class="card"><h3>Inflation Rate</h3><div class="value">${n.inflation.toFixed(1)}%</div></div>
       `;
 
-      // Sector Yield Cards
+      // Sectors
       const s = data.sectors;
       document.getElementById("sector-cards").innerHTML = `
         <div class="card"><h3>🌾 Agriculture</h3><div class="value">₳ ${s.agriculture.toLocaleString()}</div></div>
@@ -451,7 +531,7 @@
       `;
       renderChart(s);
 
-      // Commodity Prices
+      // Market
       const marketTbody = document.querySelector("#market-table tbody");
       if (data.market && data.market.length > 0) {
         marketTbody.innerHTML = "";
@@ -468,17 +548,16 @@
     }
   }
 
-  // 2. AUTHENTICATE PLAYER & RENDER PERSONAL DASHBOARD
+  // 2. AUTHENTICATE EXISTING PLAYER
   async function authenticatePlayer() {
     const name = document.getElementById("login-name").value.trim();
     const pass = document.getElementById("login-passcode").value.trim();
-    const errorDiv = document.getElementById("login-error");
+    const statusDiv = document.getElementById("auth-status");
 
-    errorDiv.style.display = "none";
+    statusDiv.innerHTML = "";
 
     if (!name || !pass) {
-      errorDiv.innerText = "Please enter both Player Name and PIN.";
-      errorDiv.style.display = "block";
+      statusDiv.innerHTML = "<span style='color:#f87171;'>Please enter both Name and Passcode.</span>";
       return;
     }
 
@@ -488,34 +567,80 @@
       const result = await res.json();
 
       if (!result.success) {
-        errorDiv.innerText = result.error || "Authentication failed.";
-        errorDiv.style.display = "block";
+        statusDiv.innerHTML = `<span style='color:#f87171;'>❌ ${result.error || "Authentication failed."}</span>`;
         return;
       }
 
       activeSession = { playerName: name, passcode: pass };
       document.getElementById("user-status-text").innerText = `Active: ${name}`;
 
-      // Render Player Cards
-      const p = result.player;
-      document.getElementById("player-stats-cards").innerHTML = `
-        <div class="card"><h3>Liquid Cash</h3><div class="value">₳ ${Math.round(p.cash).toLocaleString()}</div></div>
-        <div class="card"><h3>Total Net Worth</h3><div class="value">₳ ${Math.round(p.netWorth).toLocaleString()}</div></div>
-        <div class="card"><h3>Monthly Income</h3><div class="value">₳ ${Math.round(p.monthlyIncome).toLocaleString()}</div></div>
-        <div class="card"><h3>Political Influence</h3><div class="value">${p.politicalInfluence} pts</div></div>
-        <div class="card"><h3>Bond Holdings</h3><div class="value">₳ ${Math.round(p.bondHoldings).toLocaleString()}</div></div>
-      `;
-
-      document.getElementById("player-login-box").style.display = "none";
-      document.getElementById("player-dashboard-content").style.display = "block";
+      renderPlayerPortfolio(result.player);
 
     } catch (err) {
-      errorDiv.innerText = "Error connecting to server.";
-      errorDiv.style.display = "block";
+      statusDiv.innerHTML = "<span style='color:#f87171;'>❌ Connection error.</span>";
     }
   }
 
-  // 3. SUBMIT PLAYER ACTION (POST)
+  // 3. REGISTER NEW PLAYER (POST)
+  async function registerPlayer() {
+    const name = document.getElementById("reg-name").value.trim();
+    const pass = document.getElementById("reg-passcode").value.trim();
+    const province = document.getElementById("reg-province").value;
+    const playerClass = document.getElementById("reg-class").value;
+    const statusDiv = document.getElementById("auth-status");
+
+    statusDiv.innerHTML = "Creating citizen record...";
+
+    if (!name || !pass) {
+      statusDiv.innerHTML = "<span style='color:#f87171;'>Name and Passcode are required.</span>";
+      return;
+    }
+
+    try {
+      const payload = {
+        action: "registerPlayer",
+        playerName: name,
+        passcode: pass,
+        province: province,
+        playerClass: playerClass
+      };
+
+      const res = await fetch(API_URL, {
+        method: "POST",
+        body: JSON.stringify(payload)
+      });
+      const data = await res.json();
+
+      if (data.success) {
+        statusDiv.innerHTML = `<span style='color:#65CD74;'>✔️ ${data.message}</span>`;
+        activeSession = { playerName: name, passcode: pass };
+        document.getElementById("user-status-text").innerText = `Active: ${name}`;
+
+        // Auto log in after registration
+        setTimeout(() => {
+          renderPlayerPortfolio(data.player);
+        }, 800);
+      } else {
+        statusDiv.innerHTML = `<span style='color:#f87171;'>❌ ${data.error}</span>`;
+      }
+    } catch (err) {
+      statusDiv.innerHTML = "<span style='color:#f87171;'>❌ Failed to register player.</span>";
+    }
+  }
+
+  function renderPlayerPortfolio(player) {
+    document.getElementById("player-stats-cards").innerHTML = `
+      <div class="card"><h3>Liquid Cash</h3><div class="value">₳ ${Math.round(player.cash).toLocaleString()}</div></div>
+      <div class="card"><h3>Total Net Worth</h3><div class="value">₳ ${Math.round(player.netWorth).toLocaleString()}</div></div>
+      <div class="card"><h3>Monthly Income</h3><div class="value">₳ ${Math.round(player.monthlyIncome).toLocaleString()}</div></div>
+      <div class="card"><h3>Political Influence</h3><div class="value">${player.politicalInfluence} pts</div></div>
+    `;
+
+    document.getElementById("player-auth-box").style.display = "none";
+    document.getElementById("player-dashboard-content").style.display = "block";
+  }
+
+  // 4. SUBMIT ACTION
   async function submitPlayerAction() {
     const actionType = document.getElementById("action-type").value;
     const province = document.getElementById("action-province").value;
@@ -551,7 +676,7 @@
         statusDiv.innerHTML = `<span style='color:#f87171;'>❌ ${data.error}</span>`;
       }
     } catch (err) {
-      statusDiv.innerHTML = "<span style='color:#f87171;'>❌ Failed to reach Apps Script endpoint.</span>";
+      statusDiv.innerHTML = "<span style='color:#f87171;'>❌ Failed to reach server.</span>";
     }
   }
 
