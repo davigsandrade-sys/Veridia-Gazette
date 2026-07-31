@@ -35,10 +35,7 @@
       background-repeat: no-repeat;
     }
 
-    .app-layout {
-      display: flex;
-      min-height: 100vh;
-    }
+    .app-layout { display: flex; min-height: 100vh; }
 
     sidebar {
       width: 280px;
@@ -85,11 +82,7 @@
       font-style: italic;
     }
 
-    .nav-list {
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
-    }
+    .nav-list { display: flex; flex-direction: column; gap: 10px; }
 
     .nav-btn {
       background: linear-gradient(180deg, #3a171a 0%, #200b0d 100%);
@@ -133,11 +126,7 @@
       min-height: 100vh;
     }
 
-    .page-section {
-      display: none;
-      animation: fadeIn 0.3s ease-out forwards;
-    }
-
+    .page-section { display: none; animation: fadeIn 0.3s ease-out forwards; }
     .page-section.active { display: block; }
 
     @keyframes fadeIn {
@@ -171,11 +160,7 @@
       padding-bottom: 5px;
     }
 
-    .card .value {
-      font-size: 1.8rem;
-      font-weight: bold;
-      color: #fff;
-    }
+    .card .value { font-size: 1.8rem; font-weight: bold; color: #fff; }
 
     .crisis-box {
       background-color: rgba(169, 50, 38, 0.25);
@@ -195,25 +180,10 @@
       border: 1px solid var(--border-gold);
     }
 
-    th, td {
-      padding: 14px 18px;
-      text-align: left;
-      border-bottom: 1px solid rgba(140, 109, 49, 0.4);
-    }
+    th, td { padding: 14px 18px; text-align: left; border-bottom: 1px solid rgba(140, 109, 49, 0.4); }
+    th { background-color: #140c0e; color: var(--accent-gold); text-transform: uppercase; font-size: 0.85rem; }
 
-    th {
-      background-color: #140c0e;
-      color: var(--accent-gold);
-      text-transform: uppercase;
-      font-size: 0.85rem;
-    }
-
-    #map-wrapper {
-      display: grid;
-      grid-template-columns: 2fr 1fr;
-      gap: 20px;
-      margin-top: 20px;
-    }
+    #map-wrapper { display: grid; grid-template-columns: 2fr 1fr; gap: 20px; margin-top: 20px; }
 
     .map-container {
       position: relative;
@@ -239,14 +209,7 @@
       margin-top: 20px;
     }
 
-    /* Auth Switcher Tabs */
-    .auth-tabs {
-      display: flex;
-      gap: 10px;
-      margin-bottom: 20px;
-      border-bottom: 1px solid var(--border-gold);
-      padding-bottom: 10px;
-    }
+    .auth-tabs { display: flex; gap: 10px; margin-bottom: 20px; border-bottom: 1px solid var(--border-gold); padding-bottom: 10px; }
 
     .auth-tab-btn {
       background: none;
@@ -258,11 +221,7 @@
       padding: 5px 15px;
     }
 
-    .auth-tab-btn.active {
-      color: var(--accent-gold);
-      font-weight: bold;
-      border-bottom: 2px solid var(--accent-gold);
-    }
+    .auth-tab-btn.active { color: var(--accent-gold); font-weight: bold; border-bottom: 2px solid var(--accent-gold); }
 
     input, select, button.action-btn {
       width: 100%;
@@ -356,7 +315,7 @@
       <div class="card" style="margin-bottom: 25px;">
         <h3>Legal Tender Specification</h3>
         <p>Standard Currency: <strong>Veridian Crown (₳)</strong></p>
-        <p>Monetary Backing: <strong>0.75 oz Fine Silver per Austral</strong></p>
+        <p>Monetary Backing: <strong>0.75 oz Fine Silver per Crown</strong></p>
       </div>
 
       <h3 style="color: var(--accent-gold);">Market Commodity Prices</h3>
@@ -387,7 +346,7 @@
         </div>
 
         <div id="form-register" style="display: none;">
-          <p>Register a new persona in the Commonwealth of Veridia to receive starting capital and political influence.</p>
+          <p>Register a new persona in the Commonwealth of Veridia to receive starting capital and assets.</p>
           
           <label>Full Name / Title:</label>
           <input type="text" id="reg-name" placeholder="e.g. Baron August von Crane" />
@@ -397,19 +356,19 @@
 
           <label>Home Province:</label>
           <select id="reg-province">
-            <option value="Hartland">Hartland (Capital)</option>
+            <option value="Hartland">Hartland</option>
             <option value="Phillippia">Phillippia</option>
             <option value="New Brunswick">New Brunswick</option>
             <option value="Lowenwood">Lowenwood</option>
             <option value="Maris">Maris</option>
           </select>
 
-          <label>Socio-Economic Class:</label>
+          <label>Socio-Economic Profession:</label>
           <select id="reg-class">
-            <option value="Merchant">Merchant (+Trade Focus)</option>
-            <option value="Landowner">Landowner (+Higher Cash)</option>
-            <option value="Industrialist">Industrialist (+Factory Focus)</option>
-            <option value="Politician">Politician (+Higher Political Influence)</option>
+            <option value="Landowner">Landowner (₳2,500 Cash + 15 Farm Shares | Higher Income)</option>
+            <option value="Industrialist">Industrialist (₳2,000 Cash + 12 Industry Shares)</option>
+            <option value="Merchant">Merchant (₳2,200 Cash + 10 Shipping Shares)</option>
+            <option value="Politician">Politician (₳1,800 Cash + ₳1,000 Bonds | High Influence)</option>
           </select>
 
           <button class="action-btn" onclick="registerPlayer()">Register Citizen Account</button>
@@ -423,17 +382,19 @@
 
         <div class="form-box">
           <h3 style="color: var(--accent-gold); margin-top: 0;">Submit Executive Action</h3>
-          <p>Orders submitted here will be queued and processed during the next turn execution.</p>
+          <p>Allocate liquid capital to investments or campaigns. Orders directly adjust your cash and holdings.</p>
 
           <label>Action Type:</label>
           <select id="action-type">
-            <option value="Buy government bonds">Buy Government Bonds</option>
-            <option value="Donate to party">Donate to Political Party</option>
-            <option value="Fund newspaper">Fund Newspaper Campaign</option>
-            <option value="Hire laborers">Hire Laborers</option>
+            <option value="Buy government bonds">Buy Government Bonds (1:1 Bond Value)</option>
+            <option value="Invest in farms">Invest in Farms (₳200 per Farm Share)</option>
+            <option value="Invest in industry">Invest in Industry (₳300 per Factory Share)</option>
+            <option value="Invest in shipping">Invest in Shipping (₳250 per Fleet Share)</option>
+            <option value="Donate to party">Donate to Political Party (+Political Influence)</option>
+            <option value="Fund newspaper">Fund Newspaper Campaign (+Influence & Reputation)</option>
           </select>
 
-          <label>Target Province / Region (Optional):</label>
+          <label>Target Province / Region:</label>
           <select id="action-province">
             <option value="Hartland">Hartland</option>
             <option value="Phillippia">Phillippia</option>
@@ -442,10 +403,10 @@
             <option value="Maris">Maris</option>
           </select>
 
-          <label>Capital Allocation Amount (₳):</label>
-          <input type="number" id="action-amount" placeholder="e.g. 1000" />
+          <label>Capital Allocation Amount (₳): <span id="cash-limit-hint" style="color: var(--accent-gold); font-size: 0.85rem;"></span></label>
+          <input type="number" id="action-amount" placeholder="e.g. 1000" oninput="validateAmountInput()" />
 
-          <button class="action-btn" onclick="submitPlayerAction()">Dispatch Order</button>
+          <button class="action-btn" id="submit-action-btn" onclick="submitPlayerAction()">Dispatch Order</button>
           <div id="action-status" style="margin-top: 10px;"></div>
         </div>
       </div>
@@ -459,7 +420,7 @@
 
   let loadedProvincesData = [];
   let sectorChartInstance = null;
-  let activeSession = { playerName: "", passcode: "" };
+  let activeSession = { playerName: "", passcode: "", player: null };
 
   function switchTab(tabId) {
     document.querySelectorAll('.page-section').forEach(p => p.classList.remove('active'));
@@ -474,9 +435,7 @@
     const regForm = document.getElementById("form-register");
     const loginBtn = document.getElementById("tab-login-btn");
     const regBtn = document.getElementById("tab-register-btn");
-    const statusDiv = document.getElementById("auth-status");
-
-    statusDiv.innerHTML = "";
+    document.getElementById("auth-status").innerHTML = "";
 
     if (mode === 'login') {
       loginForm.style.display = "block";
@@ -548,13 +507,13 @@
     }
   }
 
-  // 2. AUTHENTICATE EXISTING PLAYER
+  // 2. AUTHENTICATE PLAYER
   async function authenticatePlayer() {
     const name = document.getElementById("login-name").value.trim();
     const pass = document.getElementById("login-passcode").value.trim();
     const statusDiv = document.getElementById("auth-status");
 
-    statusDiv.innerHTML = "";
+    statusDiv.innerHTML = "Authenticating with State Archives...";
 
     if (!name || !pass) {
       statusDiv.innerHTML = "<span style='color:#f87171;'>Please enter both Name and Passcode.</span>";
@@ -571,7 +530,7 @@
         return;
       }
 
-      activeSession = { playerName: name, passcode: pass };
+      activeSession = { playerName: name, passcode: pass, player: result.player };
       document.getElementById("user-status-text").innerText = `Active: ${name}`;
 
       renderPlayerPortfolio(result.player);
@@ -581,7 +540,7 @@
     }
   }
 
-  // 3. REGISTER NEW PLAYER (POST)
+  // 3. REGISTER NEW PLAYER
   async function registerPlayer() {
     const name = document.getElementById("reg-name").value.trim();
     const pass = document.getElementById("reg-passcode").value.trim();
@@ -589,7 +548,7 @@
     const playerClass = document.getElementById("reg-class").value;
     const statusDiv = document.getElementById("auth-status");
 
-    statusDiv.innerHTML = "Creating citizen record...";
+    statusDiv.innerHTML = "Registering citizen record in Gazette...";
 
     if (!name || !pass) {
       statusDiv.innerHTML = "<span style='color:#f87171;'>Name and Passcode are required.</span>";
@@ -613,13 +572,10 @@
 
       if (data.success) {
         statusDiv.innerHTML = `<span style='color:#65CD74;'>✔️ ${data.message}</span>`;
-        activeSession = { playerName: name, passcode: pass };
+        activeSession = { playerName: name, passcode: pass, player: data.player };
         document.getElementById("user-status-text").innerText = `Active: ${name}`;
 
-        // Auto log in after registration
-        setTimeout(() => {
-          renderPlayerPortfolio(data.player);
-        }, 800);
+        setTimeout(() => { renderPlayerPortfolio(data.player); }, 700);
       } else {
         statusDiv.innerHTML = `<span style='color:#f87171;'>❌ ${data.error}</span>`;
       }
@@ -628,31 +584,74 @@
     }
   }
 
+  // 4. DISPLAY PLAYER PORTFOLIO & REFRESH LIMITS
   function renderPlayerPortfolio(player) {
+    activeSession.player = player;
+
     document.getElementById("player-stats-cards").innerHTML = `
       <div class="card"><h3>Liquid Cash</h3><div class="value">₳ ${Math.round(player.cash).toLocaleString()}</div></div>
       <div class="card"><h3>Total Net Worth</h3><div class="value">₳ ${Math.round(player.netWorth).toLocaleString()}</div></div>
-      <div class="card"><h3>Monthly Income</h3><div class="value">₳ ${Math.round(player.monthlyIncome).toLocaleString()}</div></div>
+      <div class="card"><h3>Asset Value</h3><div class="value">₳ ${Math.round(player.assetValue).toLocaleString()}</div></div>
+      <div class="card"><h3>Monthly Income</h3><div class="value">₳ ${Math.round(player.monthlyIncome).toLocaleString()}/mo</div></div>
       <div class="card"><h3>Political Influence</h3><div class="value">${player.politicalInfluence} pts</div></div>
+      <div class="card"><h3>Asset Shares</h3><div class="value" style="font-size: 1.1rem;">🌾 ${player.farmShares} | 🏭 ${player.indShares} | ⛵ ${player.shipShares}</div></div>
     `;
+
+    document.getElementById("cash-limit-hint").innerText = `(Available Liquid Cash: ₳ ${Math.round(player.cash).toLocaleString()})`;
+    
+    // Set max attribute on input field
+    const amtInput = document.getElementById("action-amount");
+    amtInput.max = player.cash;
+    amtInput.value = "";
 
     document.getElementById("player-auth-box").style.display = "none";
     document.getElementById("player-dashboard-content").style.display = "block";
+    document.getElementById("action-status").innerHTML = "";
   }
 
-  // 4. SUBMIT ACTION
+  // REAL-TIME INPUT VALIDATION
+  function validateAmountInput() {
+    const input = document.getElementById("action-amount");
+    const statusDiv = document.getElementById("action-status");
+    const btn = document.getElementById("submit-action-btn");
+    const val = Number(input.value);
+    const maxCash = activeSession.player ? activeSession.player.cash : 0;
+
+    if (val > maxCash) {
+      statusDiv.innerHTML = `<span style='color:#f87171;'>⚠️ Over Allocation Error! You only have ₳ ${Math.round(maxCash).toLocaleString()} liquid cash.</span>`;
+      btn.disabled = true;
+      btn.style.opacity = "0.5";
+    } else if (val <= 0 && input.value !== "") {
+      statusDiv.innerHTML = `<span style='color:#f87171;'>⚠️ Amount must be greater than 0.</span>`;
+      btn.disabled = true;
+      btn.style.opacity = "0.5";
+    } else {
+      statusDiv.innerHTML = "";
+      btn.disabled = false;
+      btn.style.opacity = "1";
+    }
+  }
+
+  // 5. SUBMIT ACTION
   async function submitPlayerAction() {
     const actionType = document.getElementById("action-type").value;
     const province = document.getElementById("action-province").value;
     const amount = Number(document.getElementById("action-amount").value);
     const statusDiv = document.getElementById("action-status");
 
+    const availableCash = activeSession.player ? activeSession.player.cash : 0;
+
     if (!amount || amount <= 0) {
       statusDiv.innerHTML = "<span style='color:#f87171;'>Please enter a valid amount.</span>";
       return;
     }
 
-    statusDiv.innerHTML = "Submitting action...";
+    if (amount > availableCash) {
+      statusDiv.innerHTML = `<span style='color:#f87171;'>❌ Action rejected! You cannot allocate more than ₳ ${Math.round(availableCash).toLocaleString()}.</span>`;
+      return;
+    }
+
+    statusDiv.innerHTML = "Dispatching order to treasury...";
 
     try {
       const payload = {
@@ -671,12 +670,14 @@
 
       if (data.success) {
         statusDiv.innerHTML = `<span style='color:#65CD74;'>✔️ ${data.message}</span>`;
-        document.getElementById("action-amount").value = "";
+        if (data.player) {
+          renderPlayerPortfolio(data.player);
+        }
       } else {
         statusDiv.innerHTML = `<span style='color:#f87171;'>❌ ${data.error}</span>`;
       }
     } catch (err) {
-      statusDiv.innerHTML = "<span style='color:#f87171;'>❌ Failed to reach server.</span>";
+      statusDiv.innerHTML = "<span style='color:#f87171;'>❌ Failed to connect to server.</span>";
     }
   }
 
